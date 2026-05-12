@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Flight Luggage Checklist</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #0d1b2e;
+  min-height: 100vh;
+  color: #e0e8f0;
+  padding: 12px;
+  font-size: 16px;
+}
+h1 {
+  text-align: center;
+  color: #f0c040;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  padding: 14px 0 4px;
+  text-transform: uppercase;
+}
+.sub { text-align: center; color: #8aaabf; font-size: 0.82rem; margin-bottom: 16px; }
+
+/* Progress */
+.prog-card {
+  background: #132034;
+  border: 1px solid #2a4060;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+.pct { font-size: 1.8rem; font-weight: 700; color: #f0c040; }
+.pct-label { font-size: 0.72rem; color: #7a9ab8; }
+.remark {
+  font-size: 0.8rem; font-weight: 700;
+  padding: 6px 12px; border-radius: 20px;
+  background: rgba(240,192,64,0.15); color: #f0c040;
+  border: 1px solid rgba(240,192,64,0.4);
+  white-space: nowrap;
+}
+.bar-bg { background: #1e3050; border-radius: 50px; height: 13px; overflow: hidden; }
+.bar-fill {
+  height: 100%; border-radius: 50px;
+  background: linear-gradient(90deg, #d4a800, #f0c040);
+  width: 0%; transition: width 0.4s;
+}
+.count { text-align: right; font-size: 0.75rem; color: #6080a0; margin-top: 5px; }
+
+/* Buttons */
+.btn-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.btn {
+  padding: 11px 16px; border-radius: 8px; border: none;
+  cursor: pointer; font-weight: 700; font-size: 0.84rem;
+  display: flex; align-items: center; gap: 6px;
+  flex: 1; min-width: 100px; justify-content: center;
+  touch-action: manipulation;
+}
+.btn-excel { background: #1d6f42; color: #fff; }
+.btn-pdf   { background: #b03020; color: #fff; }
+.btn-reset { background: #1e3050; color: #a0b8d0; border: 1px solid #2a4060; }
+
+/* Category */
+.cat { background: #111f33; border: 1px solid #1e3050; border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+.cat-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 14px;
+  background: #162840;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+.cat-icon { font-size: 1.2rem; flex-shrink: 0; }
+.cat-title { font-size: 0.95rem; font-weight: 700; color: #f0c040; flex: 1; }
+.cat-cnt { font-size: 0.75rem; color: #6080a0; flex-shrink: 0; }
+.cat-arr { font-size: 0.65rem; color: #6080a0; flex-shrink: 0; margin-left: 4px; transition: transform 0.25s; }
+.cat-arr.open { transform: rotate(180deg); }
+.cat-body { display: none; }
+.cat-body.open { display: block; }
+
+/* Items */
+.item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid #1a2f4a;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.item:last-child { border-bottom: none; }
+.item:active { background: #1a3050; }
+.cb {
+  width: 22px; height: 22px; min-width: 22px;
+  border: 2px solid #3a6090;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 900; color: transparent;
+  background: transparent;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.item.on .cb { background: #f0c040; border-color: #f0c040; color: #0d1b2e; }
+.itext { flex: 1; min-width: 0; }
+.ilabel { font-size: 0.88rem; color: #c8d8e8; }
+.item.on .ilabel { color: #456050; text-decoration: line-through; }
+.inote { font-size: 0.72rem; color: #486080; margin-top: 2px; }
+
+footer { text-align: center; padding: 18px 0 8px; color: #304060; font-size: 0.72rem; }
+</style>
+</head>
+<body>
+
+<div style="background:linear-gradient(90deg,#0d1b2e,#1a3050,#0d1b2e);border-bottom:2px solid #f0c040;border-top:2px solid #f0c040;padding:10px 0;margin-bottom:4px;overflow:hidden;">
+  <marquee behavior="scroll" direction="left" scrollamount="5" style="font-family:'Georgia',serif;font-size:1.35rem;font-weight:700;color:#f0c040;letter-spacing:1.5px;text-shadow:0 0 12px rgba(240,192,64,0.7),0 2px 4px rgba(0,0,0,0.5);">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⭐&nbsp; Jab Tak Suraj Chand Rahega — PTC Cost Ka Naam Rahega &nbsp;⭐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⭐&nbsp; Jab Tak Suraj Chand Rahega — PTC Cost Ka Naam Rahega &nbsp;⭐
+  </marquee>
+</div>
+
+<h1>✈ Flight Luggage Checklist</h1>
+<p class="sub">Pack smart. Travel stress-free.</p>
+
+<div class="prog-card">
+  <div class="prog-top">
+    <div>
+      <div class="pct" id="pct">0%</div>
+      <div class="pct-label">Completed</div>
+    </div>
+    <div class="remark" id="remark">🧳 Let's Start Packing!</div>
+  </div>
+  <div class="bar-bg"><div class="bar-fill" id="bar"></div></div>
+  <div class="count" id="cnt">0 of 0 items checked</div>
+</div>
+
+<div class="btn-row">
+  <button class="btn btn-excel" onclick="exportExcel()">📊 Excel</button>
+  <button class="btn btn-pdf"   onclick="exportPDF()">📄 PDF</button>
+  <button class="btn btn-reset" onclick="resetAll()">↺ Reset</button>
+</div>
+
+<div id="cl"></div>
+<footer>✈ Safe travels! Double-check before you zip up.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+var DATA = [
+  { icon:"🪪", title:"Travel Documents", items:[
+    {l:"Passport", n:"Valid for 6+ months"},
+    {l:"Visa / e-Visa printout", n:"If required for destination"},
+    {l:"Flight tickets (printed or digital)"},
+    {l:"Hotel booking confirmation"},
+    {l:"Travel insurance documents"},
+    {l:"National ID / Driving License"},
+    {l:"Emergency contact list"},
+    {l:"Foreign currency / Travel card"}
+  ]},
+  { icon:"👕", title:"Clothing & Accessories", items:[
+    {l:"T-shirts / Tops", n:"Based on trip duration"},
+    {l:"Trousers / Jeans"},
+    {l:"Formal wear", n:"If meetings or events planned"},
+    {l:"Innerwear & Socks"},
+    {l:"Sleepwear / Pyjamas"},
+    {l:"Jacket / Sweater", n:"For cold destinations or AC"},
+    {l:"Comfortable walking shoes"},
+    {l:"Sandals / Slippers"},
+    {l:"Belt & Watch"},
+    {l:"Sunglasses"}
+  ]},
+  { icon:"💻", title:"Electronics & Gadgets", items:[
+    {l:"Mobile phone & charger"},
+    {l:"Laptop / Tablet & charger", n:"Keep in carry-on"},
+    {l:"Universal power adapter"},
+    {l:"Power bank", n:"Check airline watt-hour policy"},
+    {l:"Earphones / Headphones"},
+    {l:"Camera & memory cards"},
+    {l:"USB / data cables"},
+    {l:"Smart watch & charger"}
+  ]},
+  { icon:"🧴", title:"Toiletries & Personal Care", items:[
+    {l:"Toothbrush & toothpaste", n:"100ml rule for carry-on"},
+    {l:"Shampoo & conditioner"},
+    {l:"Body wash / Soap"},
+    {l:"Deodorant / Perfume"},
+    {l:"Face wash & moisturiser"},
+    {l:"Sunscreen SPF 30+"},
+    {l:"Razor & shaving kit"},
+    {l:"Comb / Hairbrush"},
+    {l:"Makeup & remover", n:"If applicable"},
+    {l:"Sanitary products", n:"If applicable"},
+    {l:"Nail clipper & tweezers", n:"In checked baggage only"}
+  ]},
+  { icon:"💊", title:"Health & Medications", items:[
+    {l:"Prescription medicines", n:"Carry enough for full trip"},
+    {l:"Painkiller (Paracetamol / Ibuprofen)"},
+    {l:"Antacid / Digestion tablets"},
+    {l:"Motion sickness pills"},
+    {l:"Band-aids & antiseptic cream"},
+    {l:"Hand sanitizer (100ml or less)"},
+    {l:"Face masks"},
+    {l:"Vitamin supplements"},
+    {l:"Doctor's prescription copy", n:"For controlled medications"}
+  ]},
+  { icon:"🎒", title:"Carry-On Essentials", items:[
+    {l:"Neck pillow"},
+    {l:"Eye mask & ear plugs"},
+    {l:"Snacks for the flight"},
+    {l:"Empty refillable water bottle"},
+    {l:"Pen (for immigration / customs forms)"},
+    {l:"Book / E-reader / Magazine"},
+    {l:"Small lock for luggage"},
+    {l:"Luggage tags on all bags"},
+    {l:"Extra carry bag or tote bag"}
+  ]}
+];
+
+var state = {}; // key: "ci_ii" => true/false
+
+function totalItems() {
+  var t = 0;
+  for (var i = 0; i < DATA.length; i++) t += DATA[i].items.length;
+  return t;
+}
+
+function doneCount() {
+  var d = 0;
+  for (var k in state) { if (state[k]) d++; }
+  return d;
+}
+
+function updateProgress() {
+  var total = totalItems();
+  var done  = doneCount();
+  var pct   = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('bar').style.width = pct + '%';
+  document.getElementById('pct').textContent  = pct + '%';
+  document.getElementById('cnt').textContent  = done + ' of ' + total + ' items checked';
+  var msgs = [
+    [0,0,"🧳 Let's Start Packing!"],
+    [1,24,"📦 Getting Started..."],
+    [25,49,"🔄 Making Progress!"],
+    [50,74,"💪 Halfway There!"],
+    [75,89,"🌟 Almost Ready!"],
+    [90,99,"✅ Final Checks..."],
+    [100,100,"🎉 All Set! Good to Go! ✈️"]
+  ];
+  for (var i = 0; i < msgs.length; i++) {
+    if (pct >= msgs[i][0] && pct <= msgs[i][1]) {
+      document.getElementById('remark').textContent = msgs[i][2];
+      break;
+    }
+  }
+}
+
+function updateCatCount(ci) {
+  var cat = DATA[ci];
+  var done = 0;
+  for (var ii = 0; ii < cat.items.length; ii++) {
+    if (state[ci+'_'+ii]) done++;
+  }
+  var el = document.getElementById('cc'+ci);
+  if (el) el.textContent = done + '/' + cat.items.length;
+}
+
+function makeToggleItem(ci, ii) {
+  return function(e) {
+    e.stopPropagation();
+    var key = ci+'_'+ii;
+    state[key] = !state[key];
+    var row = document.getElementById('row'+ci+'_'+ii);
+    if (state[key]) row.classList.add('on');
+    else row.classList.remove('on');
+    updateCatCount(ci);
+    updateProgress();
+  };
+}
+
+function makeToggleCat(ci) {
+  return function() {
+    var body = document.getElementById('body'+ci);
+    var arr  = document.getElementById('arr'+ci);
+    if (body.classList.contains('open')) {
+      body.classList.remove('open');
+      arr.classList.remove('open');
+    } else {
+      body.classList.add('open');
+      arr.classList.add('open');
+    }
+  };
+}
+
+function build() {
+  var cl = document.getElementById('cl');
+  cl.innerHTML = '';
+  for (var ci = 0; ci < DATA.length; ci++) {
+    var cat = DATA[ci];
+    var wrap = document.createElement('div');
+    wrap.className = 'cat';
+
+    var head = document.createElement('div');
+    head.className = 'cat-head';
+    head.innerHTML =
+      '<span class="cat-icon">'+cat.icon+'</span>' +
+      '<span class="cat-title">'+cat.title+'</span>' +
+      '<span class="cat-cnt" id="cc'+ci+'">0/'+cat.items.length+'</span>' +
+      '<span class="cat-arr open" id="arr'+ci+'">▼</span>';
+    head.addEventListener('click', makeToggleCat(ci));
+    head.addEventListener('touchend', function(e){ e.preventDefault(); this.click(); });
+
+    var body = document.createElement('div');
+    body.className = 'cat-body open';
+    body.id = 'body'+ci;
+
+    for (var ii = 0; ii < cat.items.length; ii++) {
+      var item = cat.items[ii];
+      var row = document.createElement('div');
+      row.className = 'item';
+      row.id = 'row'+ci+'_'+ii;
+      row.innerHTML =
+        '<div class="cb">✓</div>' +
+        '<div class="itext">' +
+          '<div class="ilabel">'+item.l+'</div>' +
+          (item.n ? '<div class="inote">'+item.n+'</div>' : '') +
+        '</div>';
+      row.addEventListener('click', makeToggleItem(ci, ii));
+      row.addEventListener('touchend', (function(c,i){ return function(e){ e.preventDefault(); makeToggleItem(c,i)(); }; })(ci,ii));
+      body.appendChild(row);
+    }
+
+    wrap.appendChild(head);
+    wrap.appendChild(body);
+    cl.appendChild(wrap);
+  }
+  updateProgress();
+}
+
+function resetAll() {
+  if (confirm('Reset all checkboxes?')) {
+    state = {};
+    build();
+  }
+}
+
+function exportExcel() {
+  if (typeof XLSX === 'undefined') { alert('Excel library not loaded. Please check your internet connection.'); return; }
+  var rows = [['Category','Item','Note','Status']];
+  for (var ci = 0; ci < DATA.length; ci++) {
+    for (var ii = 0; ii < DATA[ci].items.length; ii++) {
+      rows.push([DATA[ci].title, DATA[ci].items[ii].l, DATA[ci].items[ii].n||'', state[ci+'_'+ii] ? 'Done' : 'Pending']);
+    }
+  }
+  var wb = XLSX.utils.book_new();
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:25},{wch:38},{wch:30},{wch:12}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Checklist');
+  XLSX.writeFile(wb, 'Flight_Checklist.xlsx');
+}
+
+function exportPDF() {
+  if (typeof window.jspdf === 'undefined') { alert('PDF library not loaded. Please check your internet connection.'); return; }
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ unit:'mm', format:'a4' });
+  var total = totalItems(), done = doneCount();
+  var pct = total ? Math.round(done/total*100) : 0;
+
+  doc.setFillColor(13,27,46); doc.rect(0,0,210,297,'F');
+  doc.setFillColor(22,40,64); doc.rect(0,0,210,34,'F');
+  doc.setTextColor(240,192,64); doc.setFontSize(17); doc.setFont('helvetica','bold');
+  doc.text('FLIGHT LUGGAGE CHECKLIST', 105, 14, {align:'center'});
+  doc.setFontSize(8.5); doc.setTextColor(160,180,200); doc.setFont('helvetica','normal');
+  doc.text('Progress: '+pct+'%   |   '+done+' of '+total+' items packed', 105, 23, {align:'center'});
+  doc.text('Generated: '+new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}), 105, 30, {align:'center'});
+
+  var y = 42;
+  for (var ci = 0; ci < DATA.length; ci++) {
+    var cat = DATA[ci];
+    if (y > 265) { doc.addPage(); doc.setFillColor(13,27,46); doc.rect(0,0,210,297,'F'); y = 14; }
+    doc.setFillColor(22,40,70); doc.roundedRect(12,y,186,9,2,2,'F');
+    doc.setTextColor(240,192,64); doc.setFontSize(9.5); doc.setFont('helvetica','bold');
+    doc.text(cat.title.toUpperCase(), 16, y+6.2);
+    y += 12;
+    for (var ii = 0; ii < cat.items.length; ii++) {
+      if (y > 272) { doc.addPage(); doc.setFillColor(13,27,46); doc.rect(0,0,210,297,'F'); y = 14; }
+      var isDone = state[ci+'_'+ii];
+      doc.setFillColor(isDone?18:14, isDone?44:26, isDone?30:42);
+      doc.roundedRect(14,y,182,7.5,1.5,1.5,'F');
+      doc.setTextColor(isDone?70:195, isDone?130:205, isDone?90:225);
+      doc.setFontSize(8); doc.setFont('helvetica','normal');
+      var note = cat.items[ii].n ? '  ('+cat.items[ii].n+')' : '';
+      doc.text((isDone?'[DONE]':'[    ]')+'  '+cat.items[ii].l+note, 18, y+5);
+      y += 9;
+    }
+    y += 4;
+  }
+  doc.save('Flight_Checklist.pdf');
+}
+
+window.onload = build;
+</script>
+</body>
+</html>
